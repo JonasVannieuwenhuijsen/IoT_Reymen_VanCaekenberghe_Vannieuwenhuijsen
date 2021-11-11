@@ -1,0 +1,48 @@
+.dot {
+  height: 50px;
+  width: 50px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin-bottom: 12.5px;
+}
+
+.player1 {
+  float: left;
+}
+
+.player1_row1 {
+  float: left;
+}
+
+.player1_row2 {
+  float: left;
+  margin-left: 6.25px;
+  margin-top: 31.25px;
+}
+
+.player1_row3 {
+  float: left;
+  margin-left: 6.25px;
+  margin-top: 62.5px;
+}
+
+.player2_row1 {
+  float: left;
+  margin-top: 62.5px;
+  margin-left: 50px;
+}
+
+.player2_row2 {
+  float: left;
+  margin-left: 6.25px;
+  margin-top: 31.25px;
+}
+
+.player2_row3 {
+  float: left;
+  margin-left: 6.25px;
+}
+/*# sourceMappingURL=styles.css.map */

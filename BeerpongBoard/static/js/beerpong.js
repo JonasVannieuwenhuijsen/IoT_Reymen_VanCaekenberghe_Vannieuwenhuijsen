@@ -1,6 +1,10 @@
 var g_id_selected_dot;
-var player1_leds = '111111111111111111';
-var player2_leds = '111111111111111111';
+
+var player1_sensor_data = '';
+var player2_sensor_data = '';
+
+var g_player1_leds = '111111111111111111';
+var g_player2_leds = '111111111111111111';
 
 $(document).ready(function () {
     //var socket = io.connect('http://' + document.domain + ':' + location.port, {secure: true});
@@ -15,6 +19,7 @@ $(document).ready(function () {
     socket.on('mqtt_message', function (data) {
         if (data["topic"] === "sensorValP1") {
             var payload = data["payload"];
+            player1_sensor_data = payload;
             sensor_values = payload.split("");
 
             sensor_values.forEach((function (sensor_value, i) {
@@ -32,6 +37,7 @@ $(document).ready(function () {
 
         if (data["topic"] === "subscribe_data_player_2") {
             var payload = data["payload"];
+            player2_sensor_data = payload;
             sensor_values = payload.split("");
 
             sensor_values.forEach((function (sensor_value, i) {
@@ -89,18 +95,18 @@ $(document).ready(function () {
         }
 
         if (player_number === '1') {
-            player1_leds = player1_leds.substring(0, (led_number - 1) * 3) + RGB + player1_leds.substring((led_number - 1) * 3 + 3);
+            g_player1_leds = g_player1_leds.substring(0, (led_number - 1) * 3) + RGB + g_player1_leds.substring((led_number - 1) * 3 + 3);
 
             var topic = 'ledValP1';
-            var message = player1_leds;
+            var message = g_player1_leds;
             var qos = 1;
             var data = '{"topic": "' + topic + '", "message": "' + message + '", "qos": ' + qos + '}';
             socket.emit('publish', data = data);
         } else {
-            player2_leds = player1_leds.substring(0, (led_number - 1) * 3) + RGB + player2_leds.substring((led_number - 1) * 3 + 3);
+            g_player2_leds = g_player2_leds.substring(0, (led_number - 1) * 3) + RGB + g_player2_leds.substring((led_number - 1) * 3 + 3);
 
             var topic = 'ledValP2';
-            var message = player2_leds;
+            var message = g_player2_leds;
             var qos = 1;
             var data = '{"topic": "' + topic + '", "message": "' + message + '", "qos": ' + qos + '}';
             socket.emit('publish', data = data);
@@ -108,7 +114,7 @@ $(document).ready(function () {
 
         console.log($('#' + g_id_selected_dot).css('background-color'));
 
-        if ($('#' + g_id_selected_dot).css('background-color') !== 'rgba(255, 255, 255, 0.1)') {
+        if (g_player1_leds[led_number-1] && player_number === '1' || g_player2_leds[led_number-1] && player_number === '2' ) {
             switch (RGB) {
                 case '000':
                     $('#' + g_id_selected_dot).css('background-color', 'rgba(255, 255, 255, 0.1)');
@@ -150,9 +156,9 @@ function setCorrectCupColor(cup_id) {
 
 
     if (player_number === '1') {
-        var RGB = player1_leds.charAt(player1_leds.length - 18 + (cup_number - 1) * 3) + '' + player1_leds.charAt(player1_leds.length - 17 + (cup_number - 1) * 3) + '' + player1_leds.charAt(player1_leds.length - 16 + (cup_number - 1) * 3);
+        var RGB = g_player1_leds.charAt(g_player1_leds.length - 18 + (cup_number - 1) * 3) + '' + g_player1_leds.charAt(g_player1_leds.length - 17 + (cup_number - 1) * 3) + '' + g_player1_leds.charAt(g_player1_leds.length - 16 + (cup_number - 1) * 3);
     } else {
-        var RGB = player2_leds.charAt(player2_leds.length - 18 + (cup_number - 1) * 3) + '' + player2_leds.charAt(player2_leds.length - 17 + (cup_number - 1) * 3) + '' + player2_leds.charAt(player2_leds.length - 16 + (cup_number - 1) * 3);
+        var RGB = g_player2_leds.charAt(g_player2_leds.length - 18 + (cup_number - 1) * 3) + '' + g_player2_leds.charAt(g_player2_leds.length - 17 + (cup_number - 1) * 3) + '' + g_player2_leds.charAt(g_player2_leds.length - 16 + (cup_number - 1) * 3);
     }
 
     switch (RGB) {
@@ -210,38 +216,38 @@ function changeCupColor(id) {
     var dot_number = id.charAt(id.length - 1);
 
     if (player_number === '1') {
-        var R = player1_leds.charAt(player1_leds.length - 18 + (dot_number - 1) * 3);
+        var R = g_player1_leds.charAt(g_player1_leds.length - 18 + (dot_number - 1) * 3);
         if (R === '1') {
             $('#red_dot').css('filter', 'brightness(1)');
         } else {
             $('#red_dot').css('filter', 'brightness(0.5)');
         }
-        var G = player1_leds.charAt(player1_leds.length - 17 + (dot_number - 1) * 3);
+        var G = g_player1_leds.charAt(g_player1_leds.length - 17 + (dot_number - 1) * 3);
         if (G === '1') {
             $('#green_dot').css('filter', 'brightness(1)');
         } else {
             $('#green_dot').css('filter', 'brightness(0.5)');
         }
-        var B = player1_leds.charAt(player1_leds.length - 16 + (dot_number - 1) * 3);
+        var B = g_player1_leds.charAt(g_player1_leds.length - 16 + (dot_number - 1) * 3);
         if (B === '1') {
             $('#blue_dot').css('filter', 'brightness(1)');
         } else {
             $('#blue_dot').css('filter', 'brightness(0.5)');
         }
     } else {
-        var R = player2_leds.charAt(player2_leds.length - 18 + (dot_number - 1) * 3);
+        var R = g_player2_leds.charAt(g_player2_leds.length - 18 + (dot_number - 1) * 3);
         if (R === '1') {
             $('#red_dot').css('filter', 'brightness(1)');
         } else {
             $('#red_dot').css('filter', 'brightness(0.5)');
         }
-        var G = player2_leds.charAt(player2_leds.length - 17 + (dot_number - 1) * 3);
+        var G = g_player2_leds.charAt(g_player2_leds.length - 17 + (dot_number - 1) * 3);
         if (G === '1') {
             $('#green_dot').css('filter', 'brightness(1)');
         } else {
             $('#green_dot').css('filter', 'brightness(0.5)');
         }
-        var B = player2_leds.charAt(player2_leds.length - 16 + (dot_number - 1) * 3);
+        var B = g_player2_leds.charAt(g_player2_leds.length - 16 + (dot_number - 1) * 3);
         if (B === '1') {
             $('#blue_dot').css('filter', 'brightness(1)');
         } else {

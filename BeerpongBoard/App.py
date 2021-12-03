@@ -81,6 +81,4 @@ def handle_logging(client, userdata, level, buf):
 
 
 if __name__ == '__main__':
-    # mqtt.subscribe('subscribe_data_player_1')
-    # mqtt.subscribe('subscribe_data_player_2')
     socketio.run(app, host='0.0.0.0', port=80, use_reloader=False, debug=True)

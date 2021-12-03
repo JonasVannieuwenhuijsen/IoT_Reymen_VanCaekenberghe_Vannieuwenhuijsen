@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/static/css/beerpong.css">
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="../static/js/beerpong.js"></script>
+        <title>BEERPONG</title>
+    </head>
+    <body>
+            <h1 class="title">ONLINE BEERPONG.</h1>
+            <p class="name-p">Application created by Dean Reymen, Jonas Vannieuwenhuijsen and Jeroen Van Caekenberge.</p>
+            <div class="container-playboard">
+                <h1 class="header-player-one">PLAYER ONE.</h1>
+                <h1 class="header-player-two">PLAYER TWO.</h1>
+                <p class="p-player-one">SCORE: 0/6</p>
+                <p class="p-player-two">SCORE: 0/6</p>
+            <div class="top-container">
+                <div class="box">
+                    <div>
+                      <div class="circle" id="player1_dot1" onclick="changeCupColor('player1_dot1')"></div>
+                      <div class="circle" id="player1_dot2" onclick="changeCupColor('player1_dot2')"></div>
+                      <div class="circle" id="player1_dot3" onclick="changeCupColor('player1_dot3')"></div>
+                      <div class="circle" id="player1_dot4" onclick="changeCupColor('player1_dot4')"></div>
+                      <div class="circle" id="player1_dot5" onclick="changeCupColor('player1_dot5')"></div>
+                      <div class="circle" id="player1_dot6" onclick="changeCupColor('player1_dot6')"></div>
+                    </div>
+                  </div>
+            </div>
+            
+          <div class="box box-right">
+            <div>
+              <div class="circle" id="player2_dot1" onclick="changeCupColor('player2_dot1')"></div>
+              <div class="circle" id="player2_dot2" onclick="changeCupColor('player2_dot2')"></div>
+              <div class="circle" id="player2_dot3" onclick="changeCupColor('player2_dot3')"></div>
+              <div class="circle" id="player2_dot4" onclick="changeCupColor('player2_dot4')"></div>
+              <div class="circle" id="player2_dot5" onclick="changeCupColor('player2_dot5')"></div>
+              <div class="circle" id="player2_dot6" onclick="changeCupColor('player2_dot6')"></div>
+            </div>
+          </div>
+          </div>
+          <div class="container-color rgb_div">
+            <h1 class="h-choose">Choose your color:</h1>
+            <p class="p-select">Selected cup: 0 | 1</p>
+            <div class="color-submit-container">
+                <span class="circle c-red" id="red_dot" onclick="changeRGBColor('red_dot')"></span>
+                <span class="circle c-green" id="green_dot" onclick="changeRGBColor('green_dot')"></span>
+                <span class="circle c-blue" id="blue_dot" onclick="changeRGBColor('blue_dot')"></span>
+                <button class="btn-submit" id="submit_rgb">Submit</button>
+            </div>
+            
+          </div>
+
+
+
+</body>
+
+</html>

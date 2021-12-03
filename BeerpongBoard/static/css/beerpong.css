@@ -1,0 +1,179 @@
+@import url('https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;500;600;700&display=swap');
+
+body {
+    padding: 0 2rem;
+    height: 100vh;
+    background:gray;
+    color:white;
+    font-family: 'Readex Pro', sans-serif;
+    height: 100%;
+    background-image: url( '/static/stacked-waves-haikei-4.svg' );
+  }
+.title {
+    font-size: 4rem;
+    font-weight: 700;
+    margin-bottom: 0;
+    margin-top: 1rem;
+}
+
+.name-p {
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+  .container-playboard {
+      position: relative;
+    margin: 0;
+    font-size: 0;
+    display:flex; 
+    align-items:center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.459);
+    border-radius: 2rem;
+    box-shadow: 5px 10px 50px #00000085;
+    /* box-shadow: 5px 10px 50px #36363671; */
+    padding: 4rem 4rem;
+  }
+
+  .header-player-one {
+      margin-top: 1rem;
+      font-size: 2rem;
+      position: absolute;
+      left: 1.5rem;
+      top: 0;
+  }
+
+  .header-player-two {
+    margin-top: 1rem;
+    font-size: 2rem;
+    position: absolute;
+    right: 1.5rem;
+    top: 0;
+}
+
+.p-player-one {
+    margin-top: 1rem;
+    font-size: 1.5rem;
+    position: absolute;
+    left: 1.5rem;
+    bottom: 0;
+    margin-bottom: 1rem;
+}
+.p-player-two {
+    margin-top: 1rem;
+    font-size: 1.5rem;
+    position: absolute;
+    right: 1.5rem;
+    bottom: 0;
+    margin-bottom: 1rem;
+}
+
+  
+  
+  .circle {
+    margin: 4px;
+    display:inline-block;
+    height: 70px;
+    width: 70px;
+    border: 2px solid rgb(255, 255, 255);
+    background-color: rgba(255, 255, 255, 0.6);
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .circle:hover {
+      border: 2px solid white;
+      filter: brightness(0.5);
+  }
+
+  
+  .box {
+      margin: 3rem 0;
+      left: 6rem;
+    width:250px;
+    height:250px;
+    transform: rotate(90deg); /* Equal to rotateZ(45deg) */
+  }
+  
+  .box-right {
+    transform: rotate(270deg); /* Equal to rotateZ(45deg) */
+  }
+  .box:before,
+  .box > div:before{
+    content:"";
+    float:var(--d,left);
+    height:100%;
+    width:50%;
+    shape-outside:linear-gradient(to top var(--d,left),transparent     50%,#fff 0);
+    /* To illustrate */
+   /* background   :linear-gradient(to top left,transparent 50%,yellow 0); */
+  }
+  .box > div {
+    height:100%;
+  }
+  .box > div:before {
+    --d:right;
+    /* To illustrate */
+   /* background   :linear-gradient(to top right,transparent 50%,green 0); */
+  }
+  
+  .rgb_div {
+    /* display: none; */
+  }
+  .container-color {
+    /* display: none; */
+    margin: 0;
+    margin-top: 3rem;
+    background: rgba(255, 220, 220, 0.609);
+    border-radius: 2rem;
+    padding: 2rem;
+    /* background: rgba(255, 220, 220, 0.2); */
+    background: rgba(0, 0, 0, 0.459);
+
+    box-shadow: 5px 10px 50px #00000085;
+  }
+
+  .color-submit-container{
+    display: flex;
+    align-items: center;
+  }
+  
+  .c-red {
+    background: #E84855;
+  }
+  
+  .c-green {
+    background: #44CF6C;
+  }
+  
+  .c-blue {
+    background: #3185FC;
+  }
+
+  .h-choose {
+    margin-top: 0;
+  }
+
+  .p-select {
+    margin-top: 0;
+    margin-bottom: 1.6rem;
+  }
+
+  .btn-submit {
+    color: white;
+    font-weight: 600;
+    font-size: 1.2rem;
+    background: none;
+    border: 3px solid white;
+    border-radius: 3rem;
+    padding: 1.4rem 3.7rem ;
+    margin-left: 4rem;
+    transition: all 0.3s ease;
+
+  }
+
+  .btn-submit:hover {
+    border: 3px solid rgb(255, 255, 255);
+    background-color: rgb(255, 255, 255);
+    color: #812954;
+  }

@@ -118,7 +118,7 @@ body {
   }
   
   .rgb_div {
-    /* display: none; */
+    display: none;
   }
   .container-color {
     /* display: none; */
@@ -163,7 +163,7 @@ body {
     color: white;
     font-weight: 600;
     font-size: 1.2rem;
-    background: none;
+    background: rgba(255, 255, 255, 0.6);
     border: 3px solid white;
     border-radius: 3rem;
     padding: 1.4rem 3.7rem ;

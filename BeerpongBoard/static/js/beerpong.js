@@ -1,7 +1,7 @@
 var g_id_selected_dot;
 
-var player1_sensor_data = '111111';
-var player2_sensor_data = '111111';
+var g_player1_sensor_data = '111111';
+var g_player2_sensor_data = '111111';
 
 var g_player1_leds = '111111111111111111';
 var g_player2_leds = '111111111111111111';
@@ -13,31 +13,34 @@ $(document).ready(function () {
     var subscribe_data_player_1 = '{"topic": "sensorValP1", "qos": 1}';
     socket.emit('subscribe', data = subscribe_data_player_1);
 
-    var subscribe_data_player_2 = '{"topic": "subscribe_data_player_2", "qos": 1}';
+    var subscribe_data_player_2 = '{"topic": "sensorValP2", "qos": 1}';
     socket.emit('subscribe', data = subscribe_data_player_2);
 
     socket.on('mqtt_message', function (data) {
         if (data["topic"] === "sensorValP1") {
             var payload = data["payload"];
-            player1_sensor_data = payload;
+            g_player1_sensor_data = payload;
             sensor_values = payload.split("");
 
             sensor_values.forEach((function (sensor_value, i) {
                 var dot = 'player1_dot' + (i + 1);
                 if (sensor_value === "1") {
-                    console.log(data["topic"], sensor_value);
                     // $(dot).css("background-color", "green");
                     setCorrectCupColor(dot);
                 } else {
-                    console.log(data["topic"], sensor_value);
                     $('#' + dot).css("background-color", "rgba(255, 255, 255, 0.1)");
                 }
             }));
+
+            var leds_on = calculateLEDsThatCanBeTurnedOnAndTheirValue(payload);
+            var data = '{"topic": "ledValP1", "message": "' + leds_on + '", "qos": 1}';
+
+            socket.emit('publish', data = data);
         }
 
-        if (data["topic"] === "subscribe_data_player_2") {
+        if (data["topic"] === "sensorValP2") {
             var payload = data["payload"];
-            player2_sensor_data = payload;
+            g_player2_sensor_data = payload;
             sensor_values = payload.split("");
 
             sensor_values.forEach((function (sensor_value, i) {
@@ -49,6 +52,11 @@ $(document).ready(function () {
                     $('#' + dot).css("background-color", "#2C2C2C");
                 }
             }));
+
+            var leds_on = calculateLEDsThatCanBeTurnedOnAndTheirValue(payload);
+            var data = '{"topic": "ledValP2", "message": "' + leds_on + '", "qos": 1}';
+
+            socket.emit('publish', data = data);
         }
     })
 
@@ -61,7 +69,7 @@ $(document).ready(function () {
     });
 
     $('#send_leds_player_2').click(function (event) {
-        var topic = 'leds_data_player_2';
+        var topic = 'ledValP2';
         var message = $('#data_leds_player_2').val();
         var qos = 1;
         var data = '{"topic": "' + topic + '", "message": "' + message + '", "qos": ' + qos + '}';
@@ -100,14 +108,16 @@ $(document).ready(function () {
         } else {
             if (player_number === '1') {
                 g_player1_leds = g_player1_leds.substring(0, (led_number - 1) * 3) + RGB + g_player1_leds.substring((led_number - 1) * 3 + 3);
+                var leds_on = calculateLEDsThatCanBeTurnedOnAndTheirValue(g_player1_sensor_data);
     
                 var topic = 'ledValP1';
-                var message = g_player1_leds;
+                var message = leds_on;
                 var qos = 1;
                 var data = '{"topic": "' + topic + '", "message": "' + message + '", "qos": ' + qos + '}';
                 socket.emit('publish', data = data);
             } else {
                 g_player2_leds = g_player2_leds.substring(0, (led_number - 1) * 3) + RGB + g_player2_leds.substring((led_number - 1) * 3 + 3);
+                var leds_on = calculateLEDsThatCanBeTurnedOnAndTheirValue(g_player2_sensor_data);
     
                 var topic = 'ledValP2';
                 var message = g_player2_leds;
@@ -116,9 +126,7 @@ $(document).ready(function () {
                 socket.emit('publish', data = data);
             }
     
-            console.log($('#' + g_id_selected_dot).css('background-color'));
-    
-            if (player1_sensor_data[led_number-1] === '1' && player_number === '1' || player2_sensor_data[led_number-1] === '1' && player_number === '2' ) {
+            if (g_player1_sensor_data[led_number-1] === '1' && player_number === '1' || g_player2_sensor_data[led_number-1] === '1' && player_number === '2' ) {
                 switch (RGB) {
                     case '000':
                         $('#' + g_id_selected_dot).css('background-color', 'rgba(255, 255, 255, 0.1)');
@@ -153,6 +161,19 @@ $(document).ready(function () {
         }
     });
 });
+
+function calculateLEDsThatCanBeTurnedOnAndTheirValue(sensor_data) {
+    var leds_on = '';
+    sensor_data.split('').forEach((element, index) => {
+        var RGB = g_player1_leds.charAt(g_player1_leds.length - 18 + index * 3) + '' + g_player1_leds.charAt(g_player1_leds.length - 17 + index * 3) + '' + g_player1_leds.charAt(g_player1_leds.length - 16 + index * 3);
+        if (element === '1') {
+            leds_on = leds_on + RGB;
+        } else {
+            leds_on = leds_on + '000';
+        }
+    });
+    return leds_on;
+}
 
 function setCorrectCupColor(cup_id) {
     var player_number = cup_id.charAt(cup_id.length - 6);

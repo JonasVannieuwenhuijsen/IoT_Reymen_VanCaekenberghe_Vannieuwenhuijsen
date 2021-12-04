@@ -6,7 +6,82 @@ var g_player2_sensor_data = '111111';
 var g_player1_leds = '111111111111111111';
 var g_player2_leds = '111111111111111111';
 
+g_player = "None"
+
 $(document).ready(function () {
+    var player_number = $('#player_number').val();
+    g_player = player_number;
+    if (player_number === "1") {
+        var innerHTML = 
+        '<h1 class="header-player-one" id="header_player_one">PLAYER ONE.</h1>' +
+        '<h1 class="header-player-two" id="header_player_two">PLAYER TWO.</h1>' +
+        '<p class="p-player-one">SCORE: 0/6</p>' +
+        '<p class="p-player-two">SCORE: 0/6</p>' +
+        '<div class="box">' +
+            '<div>' +
+              '<div class="circle circle-left" id="player1_dot1" onclick="changeCupColor(\'player1_dot1\')"></div>' +
+              '<div class="circle circle-left" id="player1_dot2" onclick="changeCupColor(\'player1_dot2\')"></div>' +
+              '<div class="circle circle-left" id="player1_dot3" onclick="changeCupColor(\'player1_dot3\')"></div>' +
+              '<div class="circle circle-left" id="player1_dot4" onclick="changeCupColor(\'player1_dot4\')"></div>' +
+              '<div class="circle circle-left" id="player1_dot5" onclick="changeCupColor(\'player1_dot5\')"></div>' +
+              '<div class="circle circle-left" id="player1_dot6" onclick="changeCupColor(\'player1_dot6\')"></div>' +
+            '</div>' +
+          '</div>' +
+      
+        '<div class="box box-right">' +
+          '<div>' +
+            '<div class="circle" id="player2_dot1" onclick="changeCupColor(\'player2_dot1\')"></div>' +
+            '<div class="circle" id="player2_dot2" onclick="changeCupColor(\'player2_dot2\')"></div>' +
+            '<div class="circle" id="player2_dot3" onclick="changeCupColor(\'player2_dot3\')"></div>' +
+            '<div class="circle" id="player2_dot4" onclick="changeCupColor(\'player2_dot4\')"></div>' +
+            '<div class="circle" id="player2_dot5" onclick="changeCupColor(\'player2_dot5\')"></div>' +
+            '<div class="circle" id="player2_dot6" onclick="changeCupColor(\'player2_dot6\')"></div>' +
+          '</div>' +
+        '</div>'
+
+        $('#playboard_div').html(innerHTML);
+
+        $('#header_player_one').html($('#header_player_one').html() + ' (YOU)');
+    } else if (player_number === "2") {
+        var innerHTML = 
+        '<h1 class="header-player-one" id="header_player_one">PLAYER ONE.</h1>' +
+        '<h1 class="header-player-two" id="header_player_two">PLAYER TWO.</h1>' +
+        '<p class="p-player-one">SCORE: 0/6</p>' +
+        '<p class="p-player-two">SCORE: 0/6</p>' +
+        '<div class="box">' +
+            '<div>' +
+              '<div class="circle" id="player1_dot1" onclick="changeCupColor(\'player1_dot1\')"></div>' +
+              '<div class="circle" id="player1_dot2" onclick="changeCupColor(\'player1_dot2\')"></div>' +
+              '<div class="circle" id="player1_dot3" onclick="changeCupColor(\'player1_dot3\')"></div>' +
+              '<div class="circle" id="player1_dot4" onclick="changeCupColor(\'player1_dot4\')"></div>' +
+              '<div class="circle" id="player1_dot5" onclick="changeCupColor(\'player1_dot5\')"></div>' +
+              '<div class="circle" id="player1_dot6" onclick="changeCupColor(\'player1_dot6\')"></div>' +
+            '</div>' +
+          '</div>' +
+      
+        '<div class="box box-right">' +
+          '<div>' +
+            '<div class="circle circle-right" id="player2_dot1" onclick="changeCupColor(\'player2_dot1\')"></div>' +
+            '<div class="circle circle-right" id="player2_dot2" onclick="changeCupColor(\'player2_dot2\')"></div>' +
+            '<div class="circle circle-right" id="player2_dot3" onclick="changeCupColor(\'player2_dot3\')"></div>' +
+            '<div class="circle circle-right" id="player2_dot4" onclick="changeCupColor(\'player2_dot4\')"></div>' +
+            '<div class="circle circle-right" id="player2_dot5" onclick="changeCupColor(\'player2_dot5\')"></div>' +
+            '<div class="circle circle-right" id="player2_dot6" onclick="changeCupColor(\'player2_dot6\')"></div>' +
+          '</div>' +
+        '</div>'
+
+        $('#playboard_div').html(innerHTML);
+        
+        $('#header_player_two').html($('#header_player_two').html() + ' (YOU)');
+    } else {
+        var innerHTML = 
+        '<h1 class="header-player-one">SELECT A PLAYER.</h1>' +
+        '<a href="/beerpong?player=1"><button class="btn-player btn-player-box" id="choose_player_1">Choose player 1</button></a>' +
+        '<a href="/beerpong?player=2"><button class="btn-player btn-player-box" id="choose_player_2">Choose player 2</button></a>'
+
+        $('#playboard_div').html(innerHTML);
+    }
+
     //var socket = io.connect('http://' + document.domain + ':' + location.port, {secure: true});
     var socket = io.connect('/');
 
@@ -32,7 +107,7 @@ $(document).ready(function () {
                 }
             }));
 
-            var leds_on = calculateLEDsThatCanBeTurnedOnAndTheirValue(payload);
+            var leds_on = calculateLEDsThatCanBeTurnedOnAndTheirValue(payload, '1');
             var data = '{"topic": "ledValP1", "message": "' + leds_on + '", "qos": 1}';
 
             socket.emit('publish', data = data);
@@ -47,13 +122,13 @@ $(document).ready(function () {
                 var dot = 'player2_dot' + (i + 1);
                 if (sensor_value === "1") {
                     // $(dot).css("background-color", "green");
-                    setCorrectCupColor();
+                    setCorrectCupColor(dot);
                 } else {
                     $('#' + dot).css("background-color", "#2C2C2C");
                 }
             }));
 
-            var leds_on = calculateLEDsThatCanBeTurnedOnAndTheirValue(payload);
+            var leds_on = calculateLEDsThatCanBeTurnedOnAndTheirValue(payload, '2');
             var data = '{"topic": "ledValP2", "message": "' + leds_on + '", "qos": 1}';
 
             socket.emit('publish', data = data);
@@ -75,9 +150,6 @@ $(document).ready(function () {
         var data = '{"topic": "' + topic + '", "message": "' + message + '", "qos": ' + qos + '}';
         socket.emit('publish', data = data);
     });
-
-
-
 
     $('#submit_rgb').click(function (event) {
         $('#' + g_id_selected_dot).css('filter', 'brightness(1)');
@@ -108,7 +180,7 @@ $(document).ready(function () {
         } else {
             if (player_number === '1') {
                 g_player1_leds = g_player1_leds.substring(0, (led_number - 1) * 3) + RGB + g_player1_leds.substring((led_number - 1) * 3 + 3);
-                var leds_on = calculateLEDsThatCanBeTurnedOnAndTheirValue(g_player1_sensor_data);
+                var leds_on = calculateLEDsThatCanBeTurnedOnAndTheirValue(g_player1_sensor_data, '1');
     
                 var topic = 'ledValP1';
                 var message = leds_on;
@@ -117,10 +189,10 @@ $(document).ready(function () {
                 socket.emit('publish', data = data);
             } else {
                 g_player2_leds = g_player2_leds.substring(0, (led_number - 1) * 3) + RGB + g_player2_leds.substring((led_number - 1) * 3 + 3);
-                var leds_on = calculateLEDsThatCanBeTurnedOnAndTheirValue(g_player2_sensor_data);
+                var leds_on = calculateLEDsThatCanBeTurnedOnAndTheirValue(g_player2_sensor_data, '2');
     
                 var topic = 'ledValP2';
-                var message = g_player2_leds;
+                var message = leds_on;
                 var qos = 1;
                 var data = '{"topic": "' + topic + '", "message": "' + message + '", "qos": ' + qos + '}';
                 socket.emit('publish', data = data);
@@ -157,21 +229,33 @@ $(document).ready(function () {
                 }
             }
 
-            $('.rgb_div').hide();
+            $('#rgb_div').hide();
         }
     });
 });
 
-function calculateLEDsThatCanBeTurnedOnAndTheirValue(sensor_data) {
+function calculateLEDsThatCanBeTurnedOnAndTheirValue(sensor_data, player) {
     var leds_on = '';
-    sensor_data.split('').forEach((element, index) => {
-        var RGB = g_player1_leds.charAt(g_player1_leds.length - 18 + index * 3) + '' + g_player1_leds.charAt(g_player1_leds.length - 17 + index * 3) + '' + g_player1_leds.charAt(g_player1_leds.length - 16 + index * 3);
-        if (element === '1') {
-            leds_on = leds_on + RGB;
-        } else {
-            leds_on = leds_on + '000';
-        }
-    });
+    if (player === '1') {
+        sensor_data.split('').forEach((element, index) => {
+            var RGB = g_player1_leds.charAt(g_player1_leds.length - 18 + index * 3) + '' + g_player1_leds.charAt(g_player1_leds.length - 17 + index * 3) + '' + g_player1_leds.charAt(g_player1_leds.length - 16 + index * 3);
+            if (element === '1') {
+                leds_on = leds_on + RGB;
+            } else {
+                leds_on = leds_on + '000';
+            }
+        });
+    } else {
+        sensor_data.split('').forEach((element, index) => {
+            var RGB = g_player2_leds.charAt(g_player2_leds.length - 18 + index * 3) + '' + g_player2_leds.charAt(g_player2_leds.length - 17 + index * 3) + '' + g_player2_leds.charAt(g_player2_leds.length - 16 + index * 3);
+            if (element === '1') {
+                leds_on = leds_on + RGB;
+            } else {
+                leds_on = leds_on + '000';
+            }
+        });
+    }
+    
     return leds_on;
 }
 
@@ -217,76 +301,78 @@ function setCorrectCupColor(cup_id) {
 }
 
 function changeCupColor(id, empty=false) {
-    if ($('#' + id).css('filter') === 'brightness(0.5)' && empty == false) {
-        $('.rgb_div').hide();
-        $('#' + id).css('filter', 'brightness(1)');
-    } else {
-        var players = ['1', '2'];
-        var dots = ['1', '2', '3', '4', '5', '6'];
-        players.forEach(i => {
-            index_player_number = 6;
-
-            id_cup_player = id.substring(0, index_player_number) + i + id.substring(index_player_number + 1);
-
-            dots.forEach(j => {
-                index_dot_number = 11;
-
-                id_cup_player_and_number = id_cup_player.slice(0, -1) + j;
-
-                $('#' + id_cup_player_and_number).css('filter', 'brightness(1)');
-            });
-        });
-
-        g_id_selected_dot = id;
-        $('#' + id).css('filter', 'brightness(0.5)');
-
-
-        var player_number = id.charAt(id.length - 6);
-        var dot_number = id.charAt(id.length - 1);
-
-        if (player_number === '1') {
-            var R = g_player1_leds.charAt(g_player1_leds.length - 18 + (dot_number - 1) * 3);
-            if (R === '1') {
-                $('#red_dot').css('filter', 'brightness(1)');
-            } else {
-                $('#red_dot').css('filter', 'brightness(0.5)');
-            }
-            var G = g_player1_leds.charAt(g_player1_leds.length - 17 + (dot_number - 1) * 3);
-            if (G === '1') {
-                $('#green_dot').css('filter', 'brightness(1)');
-            } else {
-                $('#green_dot').css('filter', 'brightness(0.5)');
-            }
-            var B = g_player1_leds.charAt(g_player1_leds.length - 16 + (dot_number - 1) * 3);
-            if (B === '1') {
-                $('#blue_dot').css('filter', 'brightness(1)');
-            } else {
-                $('#blue_dot').css('filter', 'brightness(0.5)');
-            }
+    var player_number = id.charAt(id.length - 6);
+    if (player_number === g_player) {
+        if ($('#' + id).css('filter') === 'brightness(0.5)' && empty == false) {
+            $('#rgb_div').hide();
+            $('#' + id).css('filter', 'brightness(1)');
         } else {
-            var R = g_player2_leds.charAt(g_player2_leds.length - 18 + (dot_number - 1) * 3);
-            if (R === '1') {
-                $('#red_dot').css('filter', 'brightness(1)');
+            var players = ['1', '2'];
+            var dots = ['1', '2', '3', '4', '5', '6'];
+            players.forEach(i => {
+                index_player_number = 6;
+    
+                id_cup_player = id.substring(0, index_player_number) + i + id.substring(index_player_number + 1);
+    
+                dots.forEach(j => {
+                    index_dot_number = 11;
+    
+                    id_cup_player_and_number = id_cup_player.slice(0, -1) + j;
+    
+                    $('#' + id_cup_player_and_number).css('filter', 'brightness(1)');
+                });
+            });
+    
+            g_id_selected_dot = id;
+            $('#' + id).css('filter', 'brightness(0.5)');
+    
+    
+            var dot_number = id.charAt(id.length - 1);
+    
+            if (player_number === '1') {
+                var R = g_player1_leds.charAt(g_player1_leds.length - 18 + (dot_number - 1) * 3);
+                if (R === '1') {
+                    $('#red_dot').css('filter', 'brightness(1)');
+                } else {
+                    $('#red_dot').css('filter', 'brightness(0.5)');
+                }
+                var G = g_player1_leds.charAt(g_player1_leds.length - 17 + (dot_number - 1) * 3);
+                if (G === '1') {
+                    $('#green_dot').css('filter', 'brightness(1)');
+                } else {
+                    $('#green_dot').css('filter', 'brightness(0.5)');
+                }
+                var B = g_player1_leds.charAt(g_player1_leds.length - 16 + (dot_number - 1) * 3);
+                if (B === '1') {
+                    $('#blue_dot').css('filter', 'brightness(1)');
+                } else {
+                    $('#blue_dot').css('filter', 'brightness(0.5)');
+                }
             } else {
-                $('#red_dot').css('filter', 'brightness(0.5)');
+                var R = g_player2_leds.charAt(g_player2_leds.length - 18 + (dot_number - 1) * 3);
+                if (R === '1') {
+                    $('#red_dot').css('filter', 'brightness(1)');
+                } else {
+                    $('#red_dot').css('filter', 'brightness(0.5)');
+                }
+                var G = g_player2_leds.charAt(g_player2_leds.length - 17 + (dot_number - 1) * 3);
+                if (G === '1') {
+                    $('#green_dot').css('filter', 'brightness(1)');
+                } else {
+                    $('#green_dot').css('filter', 'brightness(0.5)');
+                }
+                var B = g_player2_leds.charAt(g_player2_leds.length - 16 + (dot_number - 1) * 3);
+                if (B === '1') {
+                    $('#blue_dot').css('filter', 'brightness(1)');
+                } else {
+                    $('#blue_dot').css('filter', 'brightness(0.5)');
+                }
             }
-            var G = g_player2_leds.charAt(g_player2_leds.length - 17 + (dot_number - 1) * 3);
-            if (G === '1') {
-                $('#green_dot').css('filter', 'brightness(1)');
-            } else {
-                $('#green_dot').css('filter', 'brightness(0.5)');
-            }
-            var B = g_player2_leds.charAt(g_player2_leds.length - 16 + (dot_number - 1) * 3);
-            if (B === '1') {
-                $('#blue_dot').css('filter', 'brightness(1)');
-            } else {
-                $('#blue_dot').css('filter', 'brightness(0.5)');
-            }
+    
+            dot_number.substr(1, 4);
+    
+            $('#rgb_div').show();
         }
-
-        dot_number.substr(1, 4);
-
-        $('.rgb_div').show();
     }
 }
 

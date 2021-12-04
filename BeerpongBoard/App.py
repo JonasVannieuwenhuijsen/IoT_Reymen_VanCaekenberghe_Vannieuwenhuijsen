@@ -2,7 +2,7 @@ import json
 import ssl
 
 import eventlet
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from flask_bootstrap import Bootstrap
 from flask_cors import CORS
 from flask_mqtt import Mqtt
@@ -44,9 +44,10 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/beerpong')
+@app.route('/beerpong', methods=['GET'])
 def beerpong():
-    return render_template('beerpong.html')
+    player = request.args.get('player')
+    return render_template('beerpong.html', player=player)
 
 
 @socketio.on('publish')

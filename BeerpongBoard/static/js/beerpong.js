@@ -91,6 +91,14 @@ $(document).ready(function () {
     var subscribe_data_player_2 = '{"topic": "sensorValP2", "qos": 1}';
     socket.emit('subscribe', data = subscribe_data_player_2);
 
+    // subscribe to player 1 ledstatus
+    var subscribe_leds_player_1 = '{"topic": "ledValP1", "qos": 1}';
+    socket.emit('subscribe', data = subscribe_leds_player_1);
+
+    // subscribe to player 2 ledstatus
+    var subscribe_leds_player_2 = '{"topic": "ledValP2", "qos": 1}';
+    socket.emit('subscribe', data = subscribe_leds_player_2);
+
     socket.on('mqtt_message', function (data) {
         if (data["topic"] === "sensorValP1") {
             var payload = data["payload"];
@@ -133,6 +141,28 @@ $(document).ready(function () {
 
             socket.emit('publish', data = data);
         }
+        // test voor leds uit te lezen
+        if (g_player === "2") {
+            if (data["topic"] === "ledValP1") {
+                var payload = data["payload"];
+                g_player2_sensor_data = payload;
+                console.log('LEDVALP1: ' + payload);
+    
+                player = "1"
+                setCorrectCupColorsOtherPlayer(payload, player);
+            }
+        } else {
+            if (data["topic"] === "ledValP2") {
+                var payload = data["payload"];
+                g_player2_sensor_data = payload;
+                console.log('LEDVALP2' + payload);
+    
+                player = "2"
+                setCorrectCupColorsOtherPlayer(payload, player);
+            }
+        }
+        
+        
     })
 
     $('#send_leds_player_1').click(function (event) {
@@ -298,6 +328,67 @@ function setCorrectCupColor(cup_id) {
         default:
             $('#' + cup_id).css('background-color', '#BBB');
     }
+}
+
+function setCorrectCupColorsOtherPlayer(payload, player) {
+    //var player_number = cup_id.charAt(cup_id.length - 6);
+    //var cup_number = cup_id.charAt(cup_id.length - 1);
+    var payloadArray = payload.split("");
+    var otherPlayer = player;
+
+    var rgb = [];
+    var rgbList = [];
+    for (let i = 0; i < payload.length/3; i++) {
+        for (let j = 0; j < 3; j++) {
+            rgb += payload[j + (3*i)];
+        }
+        rgbList.push(rgb);
+        rgb = "";
+    }
+
+    cup_number = 1;
+    for (let index = 6; index > 0; index--){
+        console.log(rgbList[index - 1]);
+        cup_id = 'player' + otherPlayer + '_dot' + (index);  //playerX_dotY;
+        RGB = rgbList[index - 1];
+
+        switch (RGB) {
+            case '000':
+                $('#' + cup_id).css('background-color', 'rgba(255, 255, 255, 0.1)');
+                break;
+            case '001':
+                $('#' + cup_id).css('background-color', '#3185FC');
+                break;
+            case '010':
+                $('#' + cup_id).css('background-color', '#44CF6C');
+                break;
+            case '011':
+                $('#' + cup_id).css('background-color', '#47E5BC');
+                break;
+            case '100':
+                $('#' + cup_id).css('background-color', '#E84855');
+                break;
+            case '101':
+                $('#' + cup_id).css('background-color', '#662E9B');
+                break;
+            case '110':
+                $('#' + cup_id).css('background-color', '#F9DC5C');
+                break;
+            case '111':
+                $('#' + cup_id).css('background-color', 'rgba(255, 255, 255, 0.6)');
+                break;
+            default:
+                $('#' + cup_id).css('background-color', '#BBB');
+        }
+        cup_number++;
+    }
+  
+
+    //var RGB = payload.charAt(g_player1_leds.length - 18 + (cup_number - 1) * 3) + '' + payload.charAt(payload.length - 17 + (cup_number - 1) * 3) + '' + payload.charAt(payload.length - 16 + (cup_number - 1) * 3);
+
+
+
+    
 }
 
 function changeCupColor(id, empty=false) {

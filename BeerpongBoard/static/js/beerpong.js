@@ -115,15 +115,18 @@ $(document).ready(function () {
                 }
             }));
 
-            var leds_on = calculateLEDsThatCanBeTurnedOnAndTheirValue(payload, '1');
-            var data = '{"topic": "ledValP1", "message": "' + leds_on + '", "qos": 1}';
-
-            socket.emit('publish', data = data);
+            if (g_player === '1') {
+                var leds_on = calculateLEDsThatCanBeTurnedOnAndTheirValue(payload, '1');
+                var data = '{"topic": "ledValP1", "message": "' + leds_on + '", "qos": 1}';
+    
+                socket.emit('publish', data = data);
+            }
         }
 
         if (data["topic"] === "sensorValP2") {
             var payload = data["payload"];
             g_player2_sensor_data = payload;
+
             sensor_values = payload.split("");
 
             sensor_values.forEach((function (sensor_value, i) {
@@ -132,46 +135,35 @@ $(document).ready(function () {
                     // $(dot).css("background-color", "green");
                     setCorrectCupColor(dot);
                 } else {
-                    $('#' + dot).css("background-color", "#2C2C2C");
+                    $('#' + dot).css("background-color", "rgba(255, 255, 255, 0.1)");
                 }
             }));
 
-            var leds_on = calculateLEDsThatCanBeTurnedOnAndTheirValue(payload, '2');
-            var data = '{"topic": "ledValP2", "message": "' + leds_on + '", "qos": 1}';
-
-            socket.emit('publish', data = data);
+            if (g_player === '1') {
+                var leds_on = calculateLEDsThatCanBeTurnedOnAndTheirValue(payload, '2');
+                var data = '{"topic": "ledValP2", "message": "' + leds_on + '", "qos": 1}';
+    
+                socket.emit('publish', data = data);
+            }
         }
+
         // test voor leds uit te lezen
-        if (g_player === "2") {
+        if (g_player === "1") {
+            if (data["topic"] === "ledValP2") {
+                var payload = data["payload"];
+
+                player = "2"
+                setCorrectCupColorsOtherPlayer(payload, player);
+            }
+        } else {
             if (data["topic"] === "ledValP1") {
                 var payload = data["payload"];
-                g_player2_sensor_data = payload;
-                console.log('LEDVALP1: ' + payload);
     
                 player = "1"
                 setCorrectCupColorsOtherPlayer(payload, player);
             }
-        } else {
-            if (data["topic"] === "ledValP2") {
-                var payload = data["payload"];
-                g_player2_sensor_data = payload;
-                console.log('LEDVALP2' + payload);
-    
-                player = "2"
-                setCorrectCupColorsOtherPlayer(payload, player);
-            }
         }
-        
-        
     })
-
-    $('#send_leds_player_1').click(function (event) {
-        var topic = 'ledValP1';
-        var message = $('#data_leds_player_1').val();
-        var qos = 1;
-        var data = '{"topic": "' + topic + '", "message": "' + message + '", "qos": ' + qos + '}';
-        socket.emit('publish', data = data);
-    });
 
     $('#send_leds_player_2').click(function (event) {
         var topic = 'ledValP2';
@@ -211,7 +203,7 @@ $(document).ready(function () {
             if (player_number === '1') {
                 g_player1_leds = g_player1_leds.substring(0, (led_number - 1) * 3) + RGB + g_player1_leds.substring((led_number - 1) * 3 + 3);
                 var leds_on = calculateLEDsThatCanBeTurnedOnAndTheirValue(g_player1_sensor_data, '1');
-    
+
                 var topic = 'ledValP1';
                 var message = leds_on;
                 var qos = 1;
@@ -347,8 +339,7 @@ function setCorrectCupColorsOtherPlayer(payload, player) {
     }
 
     cup_number = 1;
-    for (let index = 6; index > 0; index--){
-        console.log(rgbList[index - 1]);
+    for (let index = 6; index > 0; index--) {
         cup_id = 'player' + otherPlayer + '_dot' + (index);  //playerX_dotY;
         RGB = rgbList[index - 1];
 
@@ -380,16 +371,10 @@ function setCorrectCupColorsOtherPlayer(payload, player) {
             default:
                 $('#' + cup_id).css('background-color', '#BBB');
         }
+
         cup_number++;
     }
-  
-
-    //var RGB = payload.charAt(g_player1_leds.length - 18 + (cup_number - 1) * 3) + '' + payload.charAt(payload.length - 17 + (cup_number - 1) * 3) + '' + payload.charAt(payload.length - 16 + (cup_number - 1) * 3);
-
-
-
-    
-}
+  }
 
 function changeCupColor(id, empty=false) {
     var player_number = id.charAt(id.length - 6);

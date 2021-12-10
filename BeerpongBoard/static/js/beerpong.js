@@ -105,17 +105,20 @@ $(document).ready(function () {
             g_player1_sensor_data = payload;
             sensor_values = payload.split("");
 
-            sensor_values.forEach((function (sensor_value, i) {
-                var dot = 'player1_dot' + (i + 1);
-                if (sensor_value === "1") {
-                    // $(dot).css("background-color", "green");
-                    setCorrectCupColor(dot);
-                } else {
-                    $('#' + dot).css("background-color", "rgba(255, 255, 255, 0.1)");
-                }
-            }));
+            
 
             if (g_player === '1') {
+                sensor_values.forEach((function (sensor_value, i) {
+                    var dot = 'player1_dot' + (i + 1);
+                    if (sensor_value === "1") {
+                        // $(dot).css("background-color", "green");
+                        setCorrectCupColor(dot);
+                    } else {
+                        $('#' + dot).css("background-color", "rgba(255, 255, 255, 0.1)");
+                    }
+                }));
+
+
                 var leds_on = calculateLEDsThatCanBeTurnedOnAndTheirValue(payload, '1');
                 var data = '{"topic": "ledValP1", "message": "' + leds_on + '", "qos": 1}';
     
@@ -129,17 +132,19 @@ $(document).ready(function () {
 
             sensor_values = payload.split("");
 
-            sensor_values.forEach((function (sensor_value, i) {
-                var dot = 'player2_dot' + (i + 1);
-                if (sensor_value === "1") {
-                    // $(dot).css("background-color", "green");
-                    setCorrectCupColor(dot);
-                } else {
-                    $('#' + dot).css("background-color", "rgba(255, 255, 255, 0.1)");
-                }
-            }));
+            
 
-            if (g_player === '1') {
+            if (g_player === '2') {
+                sensor_values.forEach((function (sensor_value, i) {
+                    var dot = 'player2_dot' + (i + 1);
+                    if (sensor_value === "1") {
+                        // $(dot).css("background-color", "green");
+                        setCorrectCupColor(dot);
+                    } else {
+                        $('#' + dot).css("background-color", "rgba(255, 255, 255, 0.1)");
+                    }
+                }));
+                
                 var leds_on = calculateLEDsThatCanBeTurnedOnAndTheirValue(payload, '2');
                 var data = '{"topic": "ledValP2", "message": "' + leds_on + '", "qos": 1}';
     

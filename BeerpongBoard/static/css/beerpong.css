@@ -101,34 +101,47 @@ input:checked + .slider:before {
     margin-top: 0;
     margin-bottom: 1rem;
 }
-  .container-playboard {
-    position: relative;
-    margin: 0;
-    font-size: 0;
-    display:flex; 
-    align-items:center;
-    justify-content: center;
-    background: rgba(0, 0, 0, 0.459);
-    border-radius: 2rem;
-    box-shadow: 5px 10px 50px #00000085;
-    /* box-shadow: 5px 10px 50px #36363671; */
-    padding: 4rem 4rem;
-  }
+.container-playboard {
+  position: relative;
+  margin: 0;
+  font-size: 0;
+  display:flex; 
+  align-items:center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.459);
+  border-radius: 2rem;
+  box-shadow: 5px 10px 50px #00000085;
+  /* box-shadow: 5px 10px 50px #36363671; */
+  padding: 4rem 4rem;
+}
 
-  .header-player-one {
-      margin-top: 1rem;
-      font-size: 2rem;
-      position: absolute;
-      left: 1.5rem;
-      top: 0;
-  }
+.container-sleep {
+  position: absolute;
+  top: 4rem;
+  right: 0;
+  bottom: 4rem;
+  left: 0;
+  background: rgba(0, 0, 0, 0.459);
+  opacity:0.5;
+  z-index: 1;
+  border-radius: 2rem;
+  display: none;
+}
 
-  .header-player-two {
+.header-player-one {
     margin-top: 1rem;
     font-size: 2rem;
     position: absolute;
-    right: 1.5rem;
+    left: 1.5rem;
     top: 0;
+}
+
+.header-player-two {
+  margin-top: 1rem;
+  font-size: 2rem;
+  position: absolute;
+  right: 1.5rem;
+  top: 0;
 }
 
 .p-player-one {

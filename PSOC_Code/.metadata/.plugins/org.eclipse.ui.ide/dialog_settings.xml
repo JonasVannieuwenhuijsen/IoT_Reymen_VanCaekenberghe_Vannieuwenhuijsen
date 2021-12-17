@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<list key="installedFeatures">
-		<item value="com.cypress.studio.feature:2.4.0"/>
+		<item value="com.cypress.studio.feature:2.3.0"/>
 		<item value="ilg.gnumcueclipse.debug.gdbjtag.jlink.feature:4.4.1.202001271244"/>
 		<item value="ilg.gnumcueclipse.debug.gdbjtag.openocd.feature:4.4.1.202001271244"/>
 		<item value="ilg.gnumcueclipse.debug.gdbjtag.pyocd.feature:1.4.1.202001271244"/>

@@ -292,6 +292,10 @@ $(document).ready(function () {
             $('#rgb_div').hide();
         }
     });
+
+    $('#change_power_mode').click(function (event) {
+        console.log($('#change_power_mode').is(":checked"));
+    });
 });
 
 function setCorrectCupColorsOtherPlayer(payload, player) {

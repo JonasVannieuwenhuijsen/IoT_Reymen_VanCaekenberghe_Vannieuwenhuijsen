@@ -13,8 +13,21 @@
     </head>
     <body>
       <input id="player_number" style="display: none;" type="text" value='{{player}}'/>
-      <h1 class="title">ONLINE BEERPONG.</h1>
-      <p class="name-p">Application created by Dean Reymen, Jonas Vannieuwenhuijsen and Jeroen Van Caekenberge.</p>
+      <div class="header-container">
+        <div class="title-container">
+          <h1 class="title">ONLINE BEERPONG.</h1>
+          <p class="name-p">Application created by Dean Reymen, Jonas Vannieuwenhuijsen and Jeroen Van Caekenberge.</p>
+        </div>
+        <div class="switch-button">
+          <h2>ACTIVE</h2>
+          <label class="switch">
+            <input type="checkbox" id="change_power_mode">
+            <span class="slider round"></span>
+          </label>
+          <h2>SLEEP</h2>
+        </div>
+      </div>
+      
       <div class="container-playboard" id="playboard_div">
         <!-- <h1 class="header-player-one" id="header_player_one">PLAYER ONE.</h1>
         <h1 class="header-player-two" id="header_player_two">PLAYER TWO.</h1>

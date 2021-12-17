@@ -215,7 +215,7 @@ $(document).ready(function () {
             }
         } else {
             if (data["topic"] === "ledValP1" || data["topic"] === "dotValP1") {
-                if (data["topic"] === "dotValP2") {
+                if (data["topic"] === "dotValP1") {
                     g_player1_dots = data["payload"];
                 }
 

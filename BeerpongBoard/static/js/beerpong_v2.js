@@ -9,6 +9,9 @@ var g_player2_leds = '111111111111111111';
 var g_player1_dots = '111111111111111111';
 var g_player2_dots = '111111111111111111';
 
+// var g_player1_score = '0';
+// var g_player2_score = '0';
+
 g_player = "None"
 
 $(document).ready(function () {
@@ -113,6 +116,14 @@ $(document).ready(function () {
     var subscribe_dots_player_2 = '{"topic": "dotValP2", "qos": 1}';
     socket.emit('subscribe', data = subscribe_dots_player_2);
 
+    // subscribe to player 2 dotstatus
+    var subscribe_score_player_1 = '{"topic": "scoreP1", "qos": 1}';
+    socket.emit('subscribe', data = subscribe_score_player_1);
+
+    // subscribe to player 2 dotstatus
+    var subscribe_score_player_2 = '{"topic": "scoreP2", "qos": 1}';
+    socket.emit('subscribe', data = subscribe_score_player_2);
+
 
 
 
@@ -141,9 +152,10 @@ $(document).ready(function () {
 
                 var leds_on = calculateLEDsThatCanBeTurnedOnAndTheirValue(payload, '1');
                 publish(socket, 'ledValP1', leds_on, 1);
-            }
 
-            $('#score_player_one').html('SCORE: ' + player_one_score + '/6');
+                $('#score_player_one').html('SCORE: ' + player_one_score + '/6');
+                publish(socket, 'scoreP1', player_one_score, 1);
+            }
         }
 
         if (data["topic"] === "sensorValP2") {
@@ -170,9 +182,10 @@ $(document).ready(function () {
 
                 var leds_on = calculateLEDsThatCanBeTurnedOnAndTheirValue(payload, '2');
                 publish(socket, 'ledValP2', leds_on, 1);
+
+                $('#score_player_two').html('SCORE: ' + player_two_score + '/6');
+                publish(socket, 'scoreP2', player_two_score, 1);
             }
-            console.log(player_two_score);
-            $('#score_player_two').html('SCORE: ' + player_two_score + '/6');
         }
 
         if (g_player === "1") {
@@ -181,18 +194,24 @@ $(document).ready(function () {
                     g_player2_dots = data["payload"];
                 }
 
-                var RGB_values = g_player2_dots.split(/(.{3})/).filter(O=>O);
+                var RGB_values = g_player2_dots.split(/(.{3})/).filter(O => O);
                 var sensor_values = g_player2_sensor_data.split("");
 
-                sensor_values.forEach(function(sensor_value, i) {
+                sensor_values.forEach(function (sensor_value, i) {
                     var RGB_value = RGB_values[i];
-                    
+
                     if (sensor_value === '1') {
-                        setCupOnToRGBCase(RGB_value, "player2_dot"+(i+1));
+                        setCupOnToRGBCase(RGB_value, "player2_dot" + (i + 1));
                     } else {
-                        setCupOffToRGBCase(RGB_value, "player2_dot"+(i+1));
+                        setCupOffToRGBCase(RGB_value, "player2_dot" + (i + 1));
                     }
                 });
+            }
+
+            if (data["topic"] === "scoreP2") {
+                var player2_score = data["payload"];
+                console.log(player2_score);
+                $('#score_player_two').html('SCORE: ' + player2_score + '/6');
             }
         } else {
             if (data["topic"] === "ledValP1" || data["topic"] === "dotValP1") {
@@ -200,18 +219,23 @@ $(document).ready(function () {
                     g_player1_dots = data["payload"];
                 }
 
-                var RGB_values = g_player1_dots.split(/(.{3})/).filter(O=>O);
+                var RGB_values = g_player1_dots.split(/(.{3})/).filter(O => O);
                 var sensor_values = g_player1_sensor_data.split("");
 
-                sensor_values.forEach(function(sensor_value, i) {
+                sensor_values.forEach(function (sensor_value, i) {
                     var RGB_value = RGB_values[i];
-                    
+
                     if (sensor_value === '1') {
-                        setCupOnToRGBCase(RGB_value, "player1_dot"+(i+1));
+                        setCupOnToRGBCase(RGB_value, "player1_dot" + (i + 1));
                     } else {
-                        setCupOffToRGBCase(RGB_value, "player1_dot"+(i+1));
+                        setCupOffToRGBCase(RGB_value, "player1_dot" + (i + 1));
                     }
                 });
+            }
+
+            if (data["topic"] === "scoreP1") {
+                var player1_score = data["payload"];
+                $('#score_player_one').html('SCORE: ' + player1_score + '/6');
             }
         }
     })

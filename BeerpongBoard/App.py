@@ -39,12 +39,12 @@ socketio = SocketIO(app, cors_allowed_origins='*')
 # socketio.init_app(app, cors_allowed_origins="*")
 
 
-@app.route('/')
+@app.route('/mqtt')
 def index():
     return render_template('index.html')
 
 
-@app.route('/beerpong', methods=['GET'])
+@app.route('/', methods=['GET'])
 def beerpong():
     player = request.args.get('player')
     return render_template('beerpong.html', player=player)

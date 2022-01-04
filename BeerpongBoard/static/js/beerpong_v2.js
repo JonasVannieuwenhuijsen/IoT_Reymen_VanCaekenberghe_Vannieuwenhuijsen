@@ -84,8 +84,8 @@ $(document).ready(function () {
     } else {
         var innerHTML =
             '<h1 class="header-player-one">SELECT A PLAYER.</h1>' +
-            '<a href="/beerpong?player=1"><button class="btn-player btn-player-box" id="choose_player_1">Choose player 1</button></a>' +
-            '<a href="/beerpong?player=2"><button class="btn-player btn-player-box" id="choose_player_2">Choose player 2</button></a>'
+            '<a href="/?player=1"><button class="btn-player btn-player-box" id="choose_player_1">Choose player 1</button></a>' +
+            '<a href="/?player=2"><button class="btn-player btn-player-box" id="choose_player_2">Choose player 2</button></a>'
 
         $('#playboard_div').html(innerHTML);
     }

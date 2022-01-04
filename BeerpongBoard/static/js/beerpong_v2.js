@@ -18,8 +18,6 @@ $(document).ready(function () {
     var player_number = $('#player_number').val();
     g_player = player_number;
     if (player_number === "1") {
-        $('.switch-button').show();
-
         var innerHTML =
             '<div class="container-sleep" id="sleep_div"></div>' +
             '<h1 class="header-player-one" id="header_player_one">PLAYER ONE.</h1>' +
@@ -52,8 +50,6 @@ $(document).ready(function () {
 
         $('#header_player_one').html($('#header_player_one').html() + ' (YOU)');
     } else if (player_number === "2") {
-        $('.switch-button').show();
-
         var innerHTML =
             '<div class="container-sleep" id="sleep_div"></div>' +
             '<h1 class="header-player-one" id="header_player_one">PLAYER ONE.</h1>' +
@@ -86,8 +82,6 @@ $(document).ready(function () {
 
         $('#header_player_two').html($('#header_player_two').html() + ' (YOU)');
     } else {
-        $('.switch-button').hide();
-
         var innerHTML =
             '<h1 class="header-player-one">SELECT A PLAYER.</h1>' +
             '<a href="/beerpong?player=1"><button class="btn-player btn-player-box" id="choose_player_1">Choose player 1</button></a>' +
@@ -298,15 +292,6 @@ $(document).ready(function () {
             }
 
             $('#rgb_div').hide();
-        }
-    });
-
-    $('#change_power_mode').click(function (event) {
-        console.log($('#change_power_mode').is(":checked"), $('#sleep_div').is(":visible"));
-        if ($('#change_power_mode').is(":checked")) {
-            $('#sleep_div').show();
-        } else {
-            $('#sleep_div').hide();
         }
     });
 });
